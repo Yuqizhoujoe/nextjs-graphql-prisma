@@ -7,7 +7,7 @@ export const getUser = async (parents, arg, { db }, info) => {
       id,
     },
   });
-
+  console.log(user);
   if (!user) throw new Error("User no found!");
 
   return user;
@@ -26,7 +26,9 @@ export const getUsers = async (parent, arg, { db }) => {
 };
 export const createUser = async (parent, arg, { db, pubsub }, info) => {
   const { user } = { ...arg };
-  const { name, email, age, password } = { ...user };
+  let { name, email, age, password } = { ...user };
+  if (email) email = email.toLowerCase();
+  if (name) name = name.toLowerCase();
 
   const emailExisted = await db.user.findFirst({
     where: {
@@ -50,7 +52,7 @@ export const createUser = async (parent, arg, { db, pubsub }, info) => {
       ...newUser,
     },
   });
-
+  console.log(createUser);
   return createUser;
 };
 export const deleteUser = async (parent, arg, { db, pubsub }, info) => {

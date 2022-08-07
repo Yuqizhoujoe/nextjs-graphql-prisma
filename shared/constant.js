@@ -15,6 +15,8 @@ export const inputConstant = {
   TITLE: "title",
   IMAGE_URL: "imageUrl",
   CONTENT: "content",
+  PUBLISHED_CHECK_BOX: "publishedCheckBox",
+  PRICE: "price",
 };
 
 export const authenticationStatus = {
@@ -23,4 +25,5 @@ export const authenticationStatus = {
 
 export const routes = {
   USER_POSTS: "/user/[userId]/posts",
+  HOME_PAGE: "/",
 };

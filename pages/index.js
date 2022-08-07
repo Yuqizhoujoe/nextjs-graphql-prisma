@@ -5,15 +5,15 @@ import { useSession } from "next-auth/react";
 
 export default function Home({ posts }) {
   const { data: session, status } = useSession();
+  const { user } = { ...session };
 
   useEffect(() => {
-    console.group("HOME_PAGE");
-    console.log("SESSION", session);
-    console.log("STATUS", status);
-    console.groupEnd();
-  }, [session, status]);
+    // console.log('session', session);
+    // console.log('user', user);
+    // console.log('status', status);
+  }, [session]);
 
-  return <Posts posts={posts} />;
+  return <Posts posts={posts} isPurchase />;
 }
 
 export async function getStaticProps() {
@@ -36,5 +36,3 @@ export async function getStaticProps() {
     },
   };
 }
-
-

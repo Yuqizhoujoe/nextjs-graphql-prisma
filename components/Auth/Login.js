@@ -23,7 +23,7 @@ const Login = ({ onSubmit }) => {
     isTouched: isPasswordTouched,
   } = useInput((password) => validatePassword(password));
 
-  const submitLoginForm = (e) => {
+  const submitLoginForm = async (e) => {
     e.preventDefault();
 
     if (emailError || passwordError) return;
@@ -34,7 +34,7 @@ const Login = ({ onSubmit }) => {
     };
     console.log("LOGIN_FORM", form);
 
-    onSubmit(form);
+    await onSubmit(form);
 
     reset();
   };
@@ -56,10 +56,7 @@ const Login = ({ onSubmit }) => {
             />
           </div>
           <div className="mb-44 md:w-8/12 lg:w-5/12 lg:ml-20">
-            <form
-              onSubmit={submitLoginForm}
-              className="bg-black shadow rounded"
-            >
+            <form onSubmit={submitLoginForm}>
               <div className="mb-6">
                 <Input
                   error={emailError && isEmailTouched}

@@ -34,9 +34,9 @@ const useInput = (validate) => {
   const valueIsValid = validate(inputState.value);
   const error = !valueIsValid;
 
-  const inputChangeHandler = (event) => {
+  const inputChangeHandler = (event, val) => {
     event.preventDefault();
-    dispatch({ type: INPUT, value: event.target.value });
+    dispatch({ type: INPUT, value: val || event.target.value });
   };
 
   const initiateValueHandler = (value) => {

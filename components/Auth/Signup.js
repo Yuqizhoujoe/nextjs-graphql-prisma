@@ -149,7 +149,6 @@ const Signup = ({ onSubmit }) => {
             value={age}
             inputChangeHandler={ageChangeHandler}
             blurHandler={ageBlur}
-            style="form-control block border border-grey-light text-white w-50 p-3 rounded"
             isRequired
           />
           <button

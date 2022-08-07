@@ -15,8 +15,8 @@ export default NextAuth({
        * @returns {Promise<User>}
        */
       async authorize(credentials) {
-        console.group("CREDENTIAL_PROVIDER_JOJO");
-        console.log("CREDENTIALS", credentials);
+        // console.group("CREDENTIAL_PROVIDER_JOJO");
+        // console.log("CREDENTIALS", credentials);
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email,
@@ -32,8 +32,8 @@ export default NextAuth({
 
         if (!isValid) throw new Error("password is incorrect");
 
-        console.log("USER", user);
-        console.groupEnd();
+        // console.log("USER", user);
+        // console.groupEnd();
         return user;
       },
     }),
@@ -54,11 +54,11 @@ export default NextAuth({
       session.id = id;
       session.token = encodedToken;
       session.user = user;
-      console.group("SESSION CALLBACK_FN");
-      console.log("SESSION", session);
-      console.log("TOKEN", token);
-      console.log("USER", token.user, user);
-      console.groupEnd();
+      // console.group("SESSION CALLBACK_FN");
+      // console.log("SESSION", session);
+      // console.log("TOKEN", token);
+      // console.log("USER", token.user, user);
+      // console.groupEnd();
       return Promise.resolve(session);
     },
     /**
@@ -71,20 +71,20 @@ export default NextAuth({
      * @returns {Promise<JWT>}
      */
     async jwt({ token, user, account, profile, isNewUser }) {
-      console.group("JWT CALLBACK_FN");
+      // console.group("JWT CALLBACK_FN");
       if (user) token.user = user;
-      console.log("USER", user);
-      console.log("TOKEN", token);
-      console.log("IS_NEW_USER", isNewUser);
-      console.log("PROFILE", profile);
-      console.groupEnd();
+      // console.log("USER", user);
+      // console.log("TOKEN", token);
+      // console.log("IS_NEW_USER", isNewUser);
+      // console.log("PROFILE", profile);
+      // console.groupEnd();
       return Promise.resolve(token);
     },
     async redirect({ url, baseUrl }) {
-      // console.group("REDIRECT CALLBACK_FN");
-      // console.log("URL", url);
-      // console.log("BASE_URL", baseUrl);
-      // console.groupEnd();
+      console.group("REDIRECT CALLBACK_FN");
+      console.log("URL", url);
+      console.log("BASE_URL", baseUrl);
+      console.groupEnd();
       return baseUrl;
     },
   },
@@ -103,7 +103,7 @@ export default NextAuth({
      * @returns {Promise<*>}
      */
     encode: async ({ secret, token, maxAge }) => {
-      console.group("JWT_ENCODE");
+      // console.group("JWT_ENCODE");
       const { user } = { ...token };
       const jwtCliams = {
         sub: token.sub.toString(),
@@ -114,10 +114,10 @@ export default NextAuth({
         exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
       };
       const encodedToken = jwt.sign(jwtCliams, secret, { algorithm: "HS256" });
-      console.log("JWT_CLAIMS", jwtCliams);
-      console.log("TOKEN", token);
-      console.log("ENCODED_TOKEN", encodedToken);
-      console.groupEnd();
+      // console.log("JWT_CLAIMS", jwtCliams);
+      // console.log("TOKEN", token);
+      // console.log("ENCODED_TOKEN", encodedToken);
+      // console.groupEnd();
       return encodedToken;
     },
     /**
@@ -128,11 +128,11 @@ export default NextAuth({
      * @returns {Promise<*>}
      */
     decode: async ({ secret, token, maxAge }) => {
-      // console.group('JWT_DECODE');
+      // // console.group('JWT_DECODE');
       const decodedToken = jwt.verify(token, secret, { algorithm: "HS256" });
-      // console.log("TOKEN", token);
-      // console.log("DECODED_TOKEN", decodedToken);
-      // console.groupEnd();
+      // // console.log("TOKEN", token);
+      // // console.log("DECODED_TOKEN", decodedToken);
+      // // console.groupEnd();
       return decodedToken;
     },
   },

@@ -1,14 +1,16 @@
 import Input from "../common/Input";
 import { inputConstant, inputTypes } from "../../shared/constant";
 import useInput from "../../hooks/useInput";
-import { validate, validateImage } from "../../shared/helper";
+import { validate, validateAmount, validateImage } from "../../shared/helper";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import _ from "lodash";
 import Link from "next/link";
+import useFormSubmit from "../../hooks/useFormSubmit";
 
 const CreateEditPost = (props) => {
+  // input
   const {
     value: title,
     initiateValueHandler: titleInitiate,
@@ -39,6 +41,29 @@ const CreateEditPost = (props) => {
     reset: resetContent,
   } = useInput((content) => validate(content));
 
+  const {
+    value: price,
+    initiateValueHandler: priceInitiate,
+    inputChangeHandler: priceChange,
+    blurEventHandler: priceBlur,
+    isTouched: priceTouched,
+    error: priceError,
+    reset: resetPrice,
+  } = useInput((price) => validateAmount(price));
+  const handlePriceChange = (e) => {
+    const price = e.target.value;
+    const parsedValue = price.replace(/[^\d.]/gi, "");
+    priceChange(e, parsedValue);
+  };
+
+  // published
+  const [isPublished, setIsPublished] = useState(false);
+  const publishedCheckboxHandler = (e) => {
+    e.preventDefault();
+    setIsPublished((prevState) => !prevState);
+  };
+
+  // Next Auth, Next Router
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -47,11 +72,13 @@ const CreateEditPost = (props) => {
   const [postId, setPostId] = useState("");
 
   useEffect(() => {
-    const { title, image, content } = { ...props };
-    if ((title, image, content)) {
+    const { title, image, content, published, price } = { ...props };
+    if (title && image && content) {
       imageInitiate(image);
       titleInitiate(title);
       contentInitiate(content);
+      priceInitiate(price);
+      if (published) setIsPublished(true);
       setIsCreate(false);
     }
   }, []);
@@ -61,9 +88,43 @@ const CreateEditPost = (props) => {
     const userId = _.get(session, "user.id", null);
     setUserId(userId);
     setPostId(postId);
-  }, []);
+  }, [session, router]);
 
-  const postFormSubmitHandler = () => {};
+  const { doSubmitHandler, data, error } = useFormSubmit({ isCreate, postId });
+  const postFormSubmitHandler = (e) => {
+    e.preventDefault();
+    let postData = {
+      title,
+      content,
+      image,
+      published: isPublished,
+      price,
+    };
+
+    if (isCreate) {
+      postData = {
+        ...postData,
+        userId,
+      };
+    }
+
+    doSubmitHandler(postData);
+  };
+
+  const reset = () => {
+    resetTitle();
+    resetContent();
+    resetImage();
+    resetPrice();
+  };
+
+  useEffect(() => {
+    if (data && !_.isEmpty(data)) {
+      console.log("CREATE_EDIT_POST", data);
+      reset();
+      router.replace(`/user/${userId}/posts`);
+    }
+  }, [data]);
 
   const renderGoBackLink = () => {
     const goBackButton = (
@@ -124,7 +185,25 @@ const CreateEditPost = (props) => {
             value={content}
             inputChangeHandler={contentChange}
             blurHandler={contentBlur}
+            textLimit={100}
             isRequired
+          />
+          <Input
+            type={inputTypes.CHECK_BOX}
+            id={inputConstant.PUBLISHED_CHECK_BOX}
+            name={inputConstant.PUBLISHED_CHECK_BOX}
+            value={isPublished}
+            inputChangeHandler={publishedCheckboxHandler}
+          />
+          <Input
+            error={priceTouched && priceError}
+            type={inputTypes.TEXT}
+            id={inputConstant.PRICE}
+            name={inputConstant.PRICE}
+            placeholder="$"
+            value={parseInt(price)}
+            inputChangeHandler={handlePriceChange}
+            blurHandler={priceBlur}
           />
           {renderGoBackLink()}
           <button

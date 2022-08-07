@@ -1,8 +1,8 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import * as fs from "fs";
-import Mutation from "../../../graphql/resolvers/Mutation";
-import Query from "../../../graphql/resolvers/Query";
-import prisma from "../../../prisma/prisma";
+import Mutation from "../../graphql/resolvers/Mutation";
+import Query from "../../graphql/resolvers/Query";
+import prisma from "../../prisma/prisma";
 import * as path from "path";
 
 const graphqlDir = path.join(process.cwd(), "graphql");

@@ -6,6 +6,8 @@ import {
 import {
   createPost,
   deletePost,
+  purchasePost,
+  sellPost,
   updatePost,
 } from "../../controllers/postController";
 
@@ -16,6 +18,8 @@ const Mutation = {
   createPost,
   deletePost,
   updatePost,
+  purchasePost,
+  sellPost,
 };
 
 export default Mutation;

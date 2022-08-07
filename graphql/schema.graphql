@@ -12,6 +12,8 @@ type Mutation {
     createPost(post: PostInput!): Post!
     deletePost(id: Int!): [Post]!
     updatePost(id: Int!, data: UpdatePostInput!): Post!
+    purchasePost(postId: Int!, userId: Int!, price: Int!): Post!
+    sellPost(postId: Int!, userId: Int!): Post!
 }
 
 type User {
@@ -20,6 +22,7 @@ type User {
     email: String!
     password: String!
     age: Int
+    balance: Int!
     posts: [Post]
 }
 
@@ -31,6 +34,7 @@ type Post {
     content: String
     published: Boolean!
     image: String
+    price: Int!
     user: User!
     createdAt: DateTime
 }
@@ -55,6 +59,7 @@ input PostInput {
     content: String
     published: Boolean
     image: String
+    price: Int
     userId: Int!
 }
 
@@ -63,6 +68,7 @@ input UpdatePostInput {
     content: String
     published: Boolean
     image: String
+    price: Int
 }
 
 enum MutationType {
