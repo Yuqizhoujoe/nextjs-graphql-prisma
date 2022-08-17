@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { formatCurrency } from "../../shared/helper";
-import Button from "../common/ButtonComponent";
-import useTransaction from "../../hooks/useTransaction";
+import { formatCurrency } from "../../../public/src/shared/helper";
+import Button from "../Common/ButtonComponent";
+import useTransaction from "../../../public/src/hooks/useTransaction";
 import { useEffect, useState } from "react";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useAppContext } from "../../../public/src/shared/context/state";
 
 const Post = ({
   id: postId,
@@ -13,6 +14,7 @@ const Post = ({
   image,
   price,
   userId: postUserId,
+  content,
   published,
 }) => {
   const { data: session } = useSession();
@@ -43,6 +45,31 @@ const Post = ({
     }
   }, [data]);
 
+  // context
+  const { addPostToCart, postsInCart } = useAppContext();
+  const addPostToCartHandler = (e) => {
+    e.preventDefault();
+    addPostToCart({
+      image,
+      id: postId,
+      price,
+      userId: postUserId,
+      title,
+      content,
+    });
+  };
+
+  const renderAddToCartBtn = () => {
+    if (postUserId !== userId) {
+      if (postsInCart.find((p) => p.id === postId)) {
+        return <Button isAddToCart isInCart onClick={addPostToCartHandler} />;
+      } else {
+        return <Button isAddToCart onClick={addPostToCartHandler} />;
+      }
+    }
+    return null;
+  };
+
   return (
     <div key={postId} className="max-w-sm bg-slate-900 rounded-lg shadow">
       <Link href={`/post/${postId}`}>
@@ -62,11 +89,14 @@ const Post = ({
         </a>
         <div className="flex justify-between items-center">
           <span className="text-3xl font-bold ">{formatCurrency(price)}</span>
-          <Button
-            published={published}
-            postUserId={postUserId}
-            onClick={doTransactionHandler}
-          />
+          <div className="flex justify-between">
+            {renderAddToCartBtn()}
+            <Button
+              published={published}
+              postUserId={postUserId}
+              onClick={doTransactionHandler}
+            />
+          </div>
         </div>
       </div>
     </div>

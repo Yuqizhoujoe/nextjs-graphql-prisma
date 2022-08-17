@@ -26,4 +26,5 @@ export const authenticationStatus = {
 export const routes = {
   USER_POSTS: "/user/[userId]/posts",
   HOME_PAGE: "/",
+  USER_POST_EDIT: "/post/[postId]/edit",
 };

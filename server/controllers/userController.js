@@ -1,4 +1,4 @@
-import { hashPassword } from "../shared/auth";
+import { hashPassword } from "../../public/src/shared/auth";
 
 export const getUser = async (parents, arg, { db }, info) => {
   const { id } = arg;

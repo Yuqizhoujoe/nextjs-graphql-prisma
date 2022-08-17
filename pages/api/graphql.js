@@ -1,11 +1,11 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import * as fs from "fs";
-import Mutation from "../../graphql/resolvers/Mutation";
-import Query from "../../graphql/resolvers/Query";
+import Mutation from "../../server/graphql/resolvers/Mutation";
+import Query from "../../server/graphql/resolvers/Query";
 import prisma from "../../prisma/prisma";
 import * as path from "path";
 
-const graphqlDir = path.join(process.cwd(), "graphql");
+const graphqlDir = path.join(process.cwd(), "/server/graphql");
 const defs = fs.readFileSync(graphqlDir + "/schema.graphql").toString();
 const typeDefs = gql`
   ${defs}

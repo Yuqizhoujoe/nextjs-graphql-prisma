@@ -1,4 +1,4 @@
-import Signup from "../../components/Auth/Signup";
+import Signup from "../../components/Component/Auth/Signup";
 import { gql, useMutation } from "@apollo/client";
 import { useEffect } from "react";
 import { useRouter } from "next/router";

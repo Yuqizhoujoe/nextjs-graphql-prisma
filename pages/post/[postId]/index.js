@@ -1,6 +1,15 @@
-import PostView from "../../../components/Post/PostView";
+// eslint-disable react-hooks/rules-of-hooks
+import PostView from "../../../components/Component/Post/PostView";
+import { useAppContext } from "../../../public/src/shared/context/state";
+import { useEffect } from "react";
 
-export default function post({ post }) {
+export default function Post({ post }) {
+  const { cachePost } = useAppContext();
+
+  useEffect(() => {
+    cachePost({ ...post });
+  }, []);
+
   return <PostView {...post} />;
 }
 

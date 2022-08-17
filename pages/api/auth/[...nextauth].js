@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../prisma/prisma";
-import { verifyPassword } from "../../../shared/auth";
+import { verifyPassword } from "../../../public/src/shared/auth";
 import jwt from "jsonwebtoken";
 
 export default NextAuth({

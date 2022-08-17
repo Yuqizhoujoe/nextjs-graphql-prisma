@@ -199,7 +199,7 @@ export const sellPost = async (parent, arg, { db, pubsub }, info) => {
   if (!user) throw new Error(`User ${userId} not found`);
 
   const userPosts = user.posts || [];
-  if (_.isEmpty(userPosts)) throw new Errow(`user ${userId} has no posts```);
+  if (_.isEmpty(userPosts)) throw new Error(`user ${userId} has no posts`);
 
   const post = userPosts.find((post) => post.id === postId);
   if (!post) throw new Error(`User ${userId} doesn't own this post: ${postId}`);
@@ -215,4 +215,84 @@ export const sellPost = async (parent, arg, { db, pubsub }, info) => {
 
   console.log(updatedPost);
   return { ...updatedPost };
+};
+export const checkoutPosts = async (parent, arg, { db, pubsub }, info) => {
+  try {
+    const { userId, postIds } = { ...arg };
+
+    // get buyer
+    const buyer = await db.user.findUnique({
+      where: { id: userId },
+      include: { posts: true },
+    });
+    if (!buyer) throw new Error(`User ${userId} not found`);
+    // get buyer balance
+    let buyerBalance = buyer.balance;
+    if (!buyerBalance || buyerBalance === 0)
+      throw new Error(`User ${userId} is broke as fuck`);
+
+    for (const postId of postIds) {
+      // get the post
+      const post = await db.post.findUnique({
+        where: { id: postId },
+        include: { user: true },
+      });
+      // Post not existed
+      if (!post) throw new Error(`Post ${postId} not exist!`);
+      // Avoid buyer purchase again
+      if (buyer.posts.find((p) => p.id === postId))
+        throw new Error(`Buyer ${userId} already have this post ${postId}`);
+      // Make sure buyer have enough balance to buy this post
+      if (buyerBalance < post.price)
+        throw new Error(
+          `Buyer doesn't have enough balance (buyer current balance: ${buyerBalance}) to buy this post ${postId}`
+        );
+
+      // get seller
+      const seller = post.user;
+      // Transfer money from buyer to seller
+      // deduct price from buyer balance
+      buyerBalance -= post.price;
+      const updatedBuyer = await db.user.update({
+        where: { id: buyer.id },
+        data: {
+          balance: buyerBalance,
+        },
+      });
+      if (!updatedBuyer)
+        throw new Error(`Post: ${postId} - failed to deduct money from buyer`);
+
+      // add price to seller balance
+      const updatedSeller = await db.user.update({
+        where: { id: seller.id },
+        data: {
+          balance: seller.balance + post.price,
+        },
+      });
+      if (!updatedSeller)
+        throw new Error(`Post: ${postId} - failed to add money to seller`);
+
+      // transfer the ownership of the post to buyer from seller
+      const updatedPost = await db.post.update({
+        where: { id: postId },
+        data: {
+          published: false,
+          userId: buyer.id,
+        },
+      });
+      if (!updatedPost)
+        throw new Error(
+          `failed to transfer the ownership of the post ${postId}`
+        );
+    }
+
+    const buyerAfterCheckout = await db.user.findUnique({
+      where: { id: userId },
+      include: { posts: true },
+    });
+
+    return buyerAfterCheckout;
+  } catch (e) {
+    console.log(e);
+  }
 };

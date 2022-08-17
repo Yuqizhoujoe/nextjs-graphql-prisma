@@ -1,11 +1,12 @@
 import { Fragment, useEffect, useState } from "react";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import { formatCurrency } from "../../shared/helper";
+import { useWindowSize } from "../../../public/src/hooks/useWindowSize";
+import { formatCurrency } from "../../../public/src/shared/helper";
 import { useSession } from "next-auth/react";
 import _ from "lodash";
-import useTransaction from "../../hooks/useTransaction";
-import ButtonComponent from "../common/ButtonComponent";
+import useTransaction from "../../../public/src/hooks/useTransaction";
+import ButtonComponent from "../Common/ButtonComponent";
 import { useRouter } from "next/router";
+import DrawerContainer from "../../Container/DrawerContainer";
 
 const PostView = ({
   id: postId,
@@ -78,7 +79,12 @@ const PostView = ({
     e.preventDefault();
   };
 
-  return <Fragment>{renderPostView()}</Fragment>;
+  return (
+    <Fragment>
+      <DrawerContainer />
+      {renderPostView()}
+    </Fragment>
+  );
 };
 
 export default PostView;

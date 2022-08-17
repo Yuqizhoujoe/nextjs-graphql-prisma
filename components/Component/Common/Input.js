@@ -1,4 +1,4 @@
-import { inputConstant, inputTypes } from "../../shared/constant";
+import { inputConstant, inputTypes } from "../../../public/src/shared/constant";
 import Switch from "@mui/material/Switch";
 import { Fragment } from "react";
 import CurrencyInput from "react-currency-input-field";
@@ -85,6 +85,28 @@ const Input = ({
             <span className="inline-block text-white p-2 font-semibold">
               Published
             </span>
+          </Fragment>
+        );
+      case inputTypes.NUMBER:
+        return (
+          <Fragment>
+            <input
+              type={type}
+              name={name}
+              id={id}
+              value={value}
+              className={className.concat(" w-1/2")}
+              onBlur={blurHandler}
+              onChange={inputChangeHandler}
+              required={isRequired}
+              placeholder=" "
+            />
+            <label
+              htmlFor={id}
+              className="peer-focus:font-medium absolute text-sm text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              {placeholder}
+            </label>
           </Fragment>
         );
       default:

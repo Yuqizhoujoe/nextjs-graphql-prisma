@@ -1,13 +1,13 @@
 import Link from "next/link";
-import Input from "../common/Input";
-import { inputConstant, inputTypes } from "../../shared/constant";
-import useInput from "../../hooks/useInput";
+import Input from "../Common/Input";
+import { inputConstant, inputTypes } from "../../../public/src/shared/constant";
+import useInput from "../../../public/src/hooks/useInput";
 import {
   validate,
   validateConfirmedPassword,
   validateEmail,
   validatePassword,
-} from "../../shared/helper";
+} from "../../../public/src/shared/helper";
 
 const Signup = ({ onSubmit }) => {
   const {

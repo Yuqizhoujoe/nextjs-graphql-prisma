@@ -1,4 +1,4 @@
-import Posts from "../../../components/Post/Posts";
+import Posts from "../../../components/Component/Post/Posts";
 import prisma from "../../../prisma/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";

@@ -1,4 +1,4 @@
-import Login from "../../components/Auth/Login";
+import Login from "../../components/Component/Auth/Login";
 import { signIn } from "next-auth/react";
 
 const login = () => {

@@ -1,4 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
+import { useAppContext } from "../shared/context/state";
 
 const PURCHASE_MUTATION = gql`
   mutation PurchasePost($postId: Int!, $userId: Int!, $price: Int!) {
@@ -44,8 +45,15 @@ export default function useTransaction({ userId, price, postId }) {
   const [doSell, { data: sellData, loading: sellLoading, error: sellError }] =
     useMutation(SELL_MUTATION);
 
+  const { postsInCart, setOpenCart } = useAppContext();
+
   const doTransactionHandler = (e, isPurchase) => {
     e.preventDefault();
+
+    if (postsInCart.find((post) => post.id === postId)) {
+      setOpenCart(true);
+      return;
+    }
 
     if (isPurchase) {
       return doPurchase({

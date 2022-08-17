@@ -1,7 +1,8 @@
-import Posts from "../components/Post/Posts";
+import Posts from "../components/Component/Post/Posts";
 import prisma from "../prisma/prisma";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import DrawerContainer from "../components/Container/DrawerContainer";
 
 export default function Home({ posts }) {
   const { data: session, status } = useSession();
@@ -13,7 +14,12 @@ export default function Home({ posts }) {
     // console.log('status', status);
   }, [session]);
 
-  return <Posts posts={posts} isPurchase />;
+  return (
+    <Fragment>
+      <DrawerContainer />
+      <Posts posts={posts} isPurchase />
+    </Fragment>
+  );
 }
 
 export async function getStaticProps() {

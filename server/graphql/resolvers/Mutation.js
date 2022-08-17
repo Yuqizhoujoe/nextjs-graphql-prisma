@@ -4,6 +4,7 @@ import {
   updateUser,
 } from "../../controllers/userController";
 import {
+  checkoutPosts,
   createPost,
   deletePost,
   purchasePost,
@@ -20,6 +21,7 @@ const Mutation = {
   updatePost,
   purchasePost,
   sellPost,
+  checkoutPosts,
 };
 
 export default Mutation;

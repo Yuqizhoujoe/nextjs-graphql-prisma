@@ -1,8 +1,11 @@
-import useInput from "../../hooks/useInput";
-import { validateEmail, validatePassword } from "../../shared/helper";
+import useInput from "../../../public/src/hooks/useInput";
+import {
+  validateEmail,
+  validatePassword,
+} from "../../../public/src/shared/helper";
 import Link from "next/link";
-import Input from "../common/Input";
-import { inputTypes } from "../../shared/constant";
+import Input from "../Common/Input";
+import { inputTypes } from "../../../public/src/shared/constant";
 
 const Login = ({ onSubmit }) => {
   const {
@@ -99,7 +102,10 @@ const Login = ({ onSubmit }) => {
                     Remember me
                   </label>
                 </div>
-                <a href="#!" className="text-white">
+                <a
+                  href="components/Component/Auth/Login#!"
+                  className="text-white"
+                >
                   Forgot password?
                 </a>
               </div>

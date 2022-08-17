@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { post } from "../../shared/propTypes";
+import { post } from "../../../public/src/shared/propTypes";
 import Post from "./Post";
 
 const Posts = ({ posts, isPurchase }) => {

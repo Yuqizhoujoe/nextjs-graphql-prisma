@@ -1,4 +1,4 @@
-import CreateEditPost from "../../components/Post/CreateEditPost";
+import CreateEditPost from "../../components/Component/Post/CreateEditPost";
 
 export default function CreateUserPost() {
   return <CreateEditPost />;
